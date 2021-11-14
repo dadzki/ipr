@@ -14,7 +14,7 @@ use Kalnoy\Nestedset\NodeTrait;
  * @property int $depth
  * @property Category $parent
  * @property Category[] $children
- * @property Article[] $articles
+ * @property Posts[] $posts
  */
 class Category extends Model
 {
@@ -26,7 +26,6 @@ class Category extends Model
      */
     public $fillable = [
         'title',
-        'parent_id'
     ];
 
     /**
@@ -36,21 +35,26 @@ class Category extends Model
     protected $casts = [
         'id'        => 'integer',
         'title'     => 'string',
-        'parent_id' => 'integer',
     ];
 
-    public function articles()
+    public function posts()
     {
-        return $this->hasMany(Article::class, 'category_id', 'id');
+        return $this->hasMany(Posts::class, 'category_id', 'id');
     }
 
-    public function parentArticles(): array
+    public function parentPosts(): array
     {
-        return $this->parent ? $this->parent->allAttributes() : [];
+        return $this->parent ? $this->parent->allPosts() : [];
     }
 
-    public function allAttributes(): array
+    public function allPosts(): array
     {
-        return array_merge($this->parentAttributes(), $this->attributes()->orderBy('sort')->getModels());
+        return array_merge($this->parentPosts(), $this->posts()->orderBy('id')->getModels());
     }
+
+    public function children()
+    {
+        return $this->hasMany(static::class, 'parent_id', 'id');
+    }
+
 }

@@ -2,13 +2,14 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Article;
+use App\Models\Category;
+use App\Models\Posts;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class ArticleController extends AdminController
+class PostController extends AdminController
 {
     /**
      * Title for current resource.
@@ -24,7 +25,7 @@ class ArticleController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Article());
+        $grid = new Grid(new Posts());
 
         $grid->column('id', __('Id'));
         $grid->column('title', __('Title'));
@@ -45,7 +46,7 @@ class ArticleController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Article::findOrFail($id));
+        $show = new Show(Posts::findOrFail($id));
 
         $show->column('id', __('Id'));
         $show->column('title', __('Title'));
@@ -65,12 +66,16 @@ class ArticleController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Article());
+        $form = new Form(new Posts());
 
         $form->text('title', __('Title'));
         $form->text('content', __('Content'));
         $form->text('preview', __('Preview'));
-        $form->checkbox('is_active', __('Active'));
+        $form->switch('is_active', __('Active'));
+
+        $form->select('category_id', __('Category'))
+            ->options(Category::all()->pluck('title', 'id')->toArray())
+            ->rules('required|integer');
 
         return $form;
     }
