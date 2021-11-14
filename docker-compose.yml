@@ -53,15 +53,15 @@ services:
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_DATABASE=app"
     ports:
-      - "33061:3306"
+      - "33063:3306"
 
   redis:
     image: redis:3.0
     ports:
-      - "63791:6379"
+      - "63793:6379"
 
   node:
-    image: node:11.13-alpine
+    image: node:14.18-alpine
     volumes:
       - ./:/var/www
     working_dir: /var/www
