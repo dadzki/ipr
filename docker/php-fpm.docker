@@ -8,3 +8,4 @@ RUN apt-get update && apt-get install -y libmcrypt-dev mariadb-client wget unzip
     && docker-php-ext-enable redis.so
 
 WORKDIR /var/www
+RUN chown -R www-data:www-data /var/www

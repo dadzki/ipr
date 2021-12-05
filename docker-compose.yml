@@ -47,6 +47,7 @@ services:
     image: mysql:5.7
     volumes:
       - ./storage/docker/mysql:/var/lib/mysql
+      - ./docker/dump.sql:/home/dump.sql
     environment:
       - "MYSQL_ROOT_PASSWORD=secret"
       - "MYSQL_USER=app"
