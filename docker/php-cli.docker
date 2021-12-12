@@ -7,6 +7,13 @@ RUN apt-get update && apt-get install -y libmcrypt-dev mariadb-client wget unzip
     && pecl install redis \
     && docker-php-ext-enable redis.so
 
+
+RUN mkdir /var/www/storage/framework \
+    && mkdir  /var/www/storage/framework/sessions \
+    && mkdir  /var/www/storage/framework/views \
+    && mkdir  /var/www/storage/framework/cache \
+    && mkdir  /var/www/storage/framework/cache/data
+
 RUN wget https://getcomposer.org/installer -O - -q | php -- --version=1.9.1 --install-dir=/bin --filename=composer --quiet
 
 ENV COMPOSER_ALLOW_SUPERUSER 1

@@ -1,4 +1,11 @@
 FROM nginx:1.11
 
 ADD ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+RUN mkdir /var/www/storage/framework \
+    && mkdir  /var/www/storage/framework/sessions \
+    && mkdir  /var/www/storage/framework/views \
+    && mkdir  /var/www/storage/framework/cache \
+    && mkdir  /var/www/storage/framework/cache/data
+
 WORKDIR /var/www

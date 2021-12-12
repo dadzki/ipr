@@ -5,7 +5,7 @@ docker-down:
 	docker-compose down
 
 docker-build:
-	docker-compose up --build -d
+	docker-compose build --build-arg user_uid=$$(id -u) --build-arg group_uid=$$(id -g)
 
 test:
 	docker-compose exec php-cli vendor/bin/phpunit
@@ -22,27 +22,14 @@ assets-dev:
 assets-watch:
 	docker-compose exec node yarn run watch
 
-
-perm:
-	sudo chgrp -R www-data storage bootstrap/cache
-	sudo chmod -R ug+rwx storage bootstrap/cache
-	sudo chmod -R 775 storage
-
 composer-install:
 	docker-compose exec php-cli composer install
 
 
 dump-load:
-	mysql --host=127.0.0.1 -P33063 -u"app" -p"secret" -f app < docker/dump.sql
+	docker-compose exec mysql mysql /bin/bash -c 'mysql -u"app" -p"secret" app < /home/mysql/dump.sql'
 
-create-dirs:
-	sudo mkdir storage/framework
-	sudo mkdir storage/framework/sessions
-	sudo mkdir storage/framework/views
-	sudo mkdir storage/framework/cache
-	sudo mkdir storage/framework/cache/data
-
-init: docker-build create-dirs perm composer-install dump-load
+init: docker-build composer-install dump-load
 
 
 #	docker-compose exec mysql mysql --host=127.0.0.1 -P33063 -u"app" -p"secret" -f app < home/dump.sql
