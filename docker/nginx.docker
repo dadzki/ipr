@@ -8,11 +8,15 @@ RUN if [ "${group_uid}" != 0 ]; then groupmod -g ${group_uid? invalid argument} 
 
 ADD ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
-RUN mkdir -p /var/www/storage \
-    && mkdir  /var/www/storage/framework \
-    && mkdir  /var/www/storage/framework/sessions \
-    && mkdir  /var/www/storage/framework/views \
-    && mkdir  /var/www/storage/framework/cache \
-    && mkdir  /var/www/storage/framework/cache/data
 
 WORKDIR /var/www
+
+RUN mkdir /var/www/storage \
+    && mkdir /var/www/storage/framework \
+    && mkdir /var/www/storage/framework/sessions \
+    && mkdir /var/www/storage/framework/views \
+    && mkdir /var/www/storage/framework/cache \
+    && mkdir /var/www/storage/logs \
+    && mkdir /var/www/storage/framework/cache/data
+
+RUN chown -R www-data:www-data /var/www

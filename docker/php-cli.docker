@@ -12,5 +12,14 @@ RUN wget https://getcomposer.org/installer -O - -q | php -- --version=1.9.1 --in
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+RUN mkdir -p /var/www/storage \
+    && mkdir -p /var/www/storage/framework \
+    && mkdir -p /var/www/storage/framework/sessions \
+    && mkdir -p /var/www/storage/framework/views \
+    && mkdir -p /var/www/storage/framework/cache \
+    && mkdir -p /var/www/storage/logs \
+    && mkdir -p /var/www/storage/framework/cache/data
 
 WORKDIR /var/www
+
+RUN chown -R www-data:www-data /var/www
