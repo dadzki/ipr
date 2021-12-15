@@ -1,5 +1,11 @@
 FROM php:7.4.0-fpm
 
+ARG user_uid
+ARG group_uid
+
+RUN if [ "${user_uid}" != 0 ]; then usermod -u ${user_uid? invalid argument} www-data; fi
+RUN if [ "${group_uid}" != 0 ]; then groupmod -g ${group_uid? invalid argument} www-data; fi
+
 RUN apt-get update && apt-get install -y libmcrypt-dev mariadb-client wget unzip \
     && docker-php-ext-install pdo_mysql \
     && pecl install mcrypt \
