@@ -23,7 +23,7 @@ assets-watch:
 	docker-compose exec -u www-data node yarn run watch
 
 composer-install:
-	docker-compose exec -u www-data php-cli composer install
+	docker-compose exec php-cli composer install
 
 
 dump-load:
